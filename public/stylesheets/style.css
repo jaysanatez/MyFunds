@@ -1,0 +1,128 @@
+th, td {
+	text-align: center;
+}
+
+.daily {
+	height: 50px;
+	overflow: auto;
+}
+
+.portfolio {
+	overflow: auto;
+}
+
+.daily-cell {
+	width: 25%;
+	height: 100%;
+	float: left;
+}
+
+.daily-cell-middle {
+	width: 50%;
+	height: 100%;
+	float: left;
+}
+
+.symbol {
+	color: #444444;
+	font-size: 14pt;
+}
+
+.value {
+	text-align: center;
+	color: #444444;
+	font-size: 14pt;
+}
+
+.diff {
+	font-size: 10pt;
+	border-radius: 5px;
+	border: 1.5px solid #444444;
+	margin-left: 10px;
+	padding: 3px 5px 3px 5px;
+}
+
+.gain {
+	background-color: #99FF99;
+}
+
+.loss {
+	background-color: #FF9999;
+}
+
+.time {
+	text-align: right;
+	color: #444444;
+}
+
+.updated {
+	color: #AAAAAA;
+	font-size: 8pt;
+}
+
+.txt-mid {
+	text-align: center;
+}
+
+.txt-right {
+	text-align: right;
+}
+
+.toggle {
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.ld-txt {
+	font-size: 20pt;
+	margin: 50px auto;
+	display: table;
+}
+
+.ld-img {
+	display: table;
+	margin: 15px auto;
+}
+
+.ld-txt img {
+	margin-left: 20px
+}
+
+td.net {
+	position: relative;
+}
+
+.net-undr {
+	height: 4px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border-top: 1px solid #DDDDDD;
+}
+
+.btn-right a {
+	float: right;
+}
+
+.btn-right a span {
+	margin-left: 10px;
+}
+
+.white, .white a {
+  color: #FFFFFF;
+}
+
+.port-hist-load {
+	float: left;
+	margin-top: 15px;
+	margin-left: 15px;
+}
+
+.port-hist-head h3 {
+	float: left;
+}
+
+.port-hist-head {
+	overflow: auto;
+}

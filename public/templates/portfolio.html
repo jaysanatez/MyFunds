@@ -1,0 +1,62 @@
+<% if (error != '') { %>
+	<div class="alert alert-dismissible alert-danger">
+	  <button type="button" class="close" data-dismiss="alert">×</button>
+	  <%= error %>
+	</div>
+<% } else { %>
+	<div class="page-header">
+	  <h3>Portfolio</h3>
+	</div>
+	<% if (portfolio.length > 0) { %>
+		<div class="list-group">
+			<% _.each(portfolio, function(stock) { %>
+			<div class="list-group-item portfolio">
+				<div class="daily-cell">
+					<a class="toggle"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a>
+					<%= stock.name %>
+				</div>
+				<div class="daily-cell-middle txt-mid">
+					<%= stock.numShares %> shares
+				</div>
+				<div class="daily-cell txt-right">
+					Bought on <%= prettyDate(stock.purchaseDates[0]) %>
+				</div>
+			</div>
+			<div id="graph<%= stock.name %>" class="list-group-item"> 
+				<span class="ld-img"><img src="images/loading.gif"></span>
+			</div>
+			<% }); %>
+		</div>
+		<script type="text/javascript">
+			$('.toggle').click(function() {
+				var top = 'glyphicon-triangle-top';
+				var bottom = 'glyphicon-triangle-bottom';
+				var span = $(this).children().first();
+				var b = span.hasClass(bottom);
+				span.removeClass(b ? bottom : top);
+				span.addClass(b ? top : bottom);
+
+				var item = $(this).parentsUntil('div.list-group')[1];
+				$(item).next().slideToggle(500);
+			});
+
+			Highcharts.theme = {
+			   colors: ["#FF0000", "#888888", "#000000"]
+			}
+   	
+			var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
+		</script>
+	<% } else { %>
+		<h4>Your portfolio contains no purchases.</h4>
+	<% } %>
+<% } %>
+<%
+	function prettyDate(date) {
+		var d = new Date(date);
+
+		var monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July',
+        	'August', 'September', 'October', 'November', 'December' ];
+
+		return monthNames[d.getMonth()] + ' ' + (d.getDate() + 1) + ', ' + d.getFullYear();
+	}
+%>

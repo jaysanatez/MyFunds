@@ -1,0 +1,31 @@
+<script type="text/javascript">
+	$('#data-loading').remove();
+	var values = [];
+	var netValues = [];
+	<% if (error == '' && data.length > 0) { %>
+		<% for (var i = 0; i < data.length; i++) { %>
+			<% var d = data[i]; %>
+			values.push([ <%= new Date(d.date).getTime() %>, <%= Number(d.totalValue).toFixed(2) %> ]);
+			netValues.push([ <%= new Date(d.date).getTime() %>, <%= Number(d.totalValue - d.value).toFixed(2) %> ]);
+		<% } %>
+
+		var chart = $('#portHistGraph').highcharts();
+        chart.addSeries({
+            name: 'Unrealized Value',
+            data: values
+        });
+
+		$('#netHistGraph').highcharts('StockChart', {
+	            rangeSelector: { selected: 1 },
+	            title: { text: 'Net Portfolio Value History' },
+	            series: [{
+	                name: 'Portfolio Value',
+	                data: netValues,
+	                type: 'spline',
+	                tooltip: { valueDecimals: 2 }
+	            }]
+        });        
+	<% } else { %>
+		console.log(<%= error %>);
+	<% } %>
+</script>

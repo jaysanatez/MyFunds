@@ -1,0 +1,45 @@
+<script type="text/javascript">
+	<% for (var i = 0; i < data.length; i++) { %>
+		<% var d = data[i]; %>
+
+		var prices = [];
+		<% for (var j = 0; j < d.history.length; j++) { %>
+			<% var h = d.history[j]; %>
+			prices.push([ <%= new Date(h.date).getTime() %>, <%= h.close %> ]);
+		<% } %>
+
+		var flags = [];
+		<% for (var j = 0; j < stocks[i].purchaseDates.length; j++) { %>
+			<% var date = stocks[i].purchaseDates[j]; %>
+			flags.push({
+				x: new Date('<%= date %>'),
+				title: '$',
+                text: 'Bought <%= d.stockName %>'
+			});
+		<% } %>
+
+        $('#graph<%= d.stockName %>').highcharts('StockChart', {
+            rangeSelector: { selected: 1 },
+            title: { text: '<%= d.stockName %> Share Price' },
+            series: [{
+                name: '<%= d.stockName %> Share Price',
+                data: prices,
+                type: 'spline',
+                tooltip: { valueDecimals: 2 },
+                id: 'graph<%= d.stockName %>'
+            },{
+            	color: Highcharts.getOptions().colors[0],
+        		fillColor: Highcharts.getOptions().colors[0],
+        		type: 'flags',
+                data: flags,
+                onSeries: 'graph<%= d.stockName %>',
+                width: 16,
+                states: {
+                    hover: {
+                        fillColor: '#FFFFFF'
+                    }
+                }
+            }]
+        });
+    <% } %>
+</script>

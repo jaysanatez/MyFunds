@@ -1,0 +1,36 @@
+<% if (error != '') { %>
+	<div class="alert alert-dismissible alert-danger">
+	  <button type="button" class="close" data-dismiss="alert">×</button>
+	  <%= error %>
+	</div>
+<% } else { %>
+	<div class="page-header">
+	  <h3>Purchases</h3>
+	</div>
+	<% if (collection.length > 0) { %>
+		<table id="purchases" class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>Fund</th>
+					<th># Shares</th>
+					<th>Share Price</th>
+					<th>Value</th>
+					<th>Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% _.each(collection, function(purchase) { %>
+				<tr>
+					<td><%- purchase.get('stock') %></td>
+					<td><%- purchase.get('shares') %></td>
+					<td>$<%- purchase.get('price') %></td>
+					<td>$<%- Number(purchase.get('shares') * purchase.get('price')).toFixed(2) %></td>
+					<td><%- purchase.get('date').split('T')[0] %></td>
+				</tr>
+				<% }); %>
+			</tbody>
+		</table>
+	<% } else { %>
+		<h4>No purchases recorded.</h4>
+	<% } %>
+<% } %>

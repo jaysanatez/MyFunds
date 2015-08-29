@@ -1,0 +1,16 @@
+/ - GET
+/api/login - POST
+/api/users - POST
+/api/users/:id - GET
+/api/users/:email/valid - GET
+/api/users/:id/purchases - GET
+/api/users/:id/tracks - GET
+/api/users/:id/portfolio - GET
+/api/users/:id/report/today - GET
+/api/users/:id/report/history - GET
+/api/users/:id/report/portfolio - GETs
+
+data - 55a1bfda26b5c0b8a199177c
+no data - 55a1d6c326b5c0b8a199177f
+no user - 55a1bfda26b5c0b8a1991666
+invalid - 55a1

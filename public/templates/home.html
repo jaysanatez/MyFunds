@@ -1,0 +1,133 @@
+<% if (error != '') { %>
+	<div class="alert alert-dismissible alert-danger">
+	  <button type="button" class="close" data-dismiss="alert">×</button>
+	  <%= error %>
+	</div>
+<% } else { %>
+	<div class="page-header">
+		<h3>Welcome to MyFunds, <%= user.get('name') %>!</h3>
+	</div>
+	<% if (user.get('purchased').length > 0 ) { %>
+		<h5 class="text-primary">Purchased Funds</h5>
+		<div class="list-group">
+			<% _.each(user.get('purchased'), function(stock) { %>
+				<div class="list-group-item daily">
+					<div class="daily-cell symbol">
+						<%= stock.symbol %>
+					</div>
+					<div class="daily-cell-middle value">
+						$<%= stock.price %>
+						<span class="diff <%= stock.change.indexOf('+') > -1 ? 'gain' : 'loss' %>">
+							<%= stock.change %>
+						</span>
+					</div>
+					<div class="daily-cell time">
+						<span><%= prettyDate(stock.date) %></span>
+						<div class="updated">Updated: <%= stock.time %></div>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+		<% if (user.get('tracked').length > 0) { %>
+			<h5 class="text-primary">Tracked Funds</h5>
+			<div class="list-group">
+				<% _.each(user.get('tracked'), function(stock) { %>
+					<div class="list-group-item daily">
+						<div class="daily-cell symbol">
+							<%= stock.symbol %>
+						</div>
+						<div class="daily-cell-middle value">
+							$<%= stock.price %>
+							<span class="diff <%= stock.change.indexOf('+') > -1 ? 'gain' : 'loss' %>">
+								<%= stock.change %>
+							</span>
+						</div>
+						<div class="daily-cell time">
+							<span><%= prettyDate(stock.date) %></span>
+							<div class="updated">Updated: <%= stock.time %></div>
+						</div>
+					</div>
+				<% }); %>
+			</div>
+		<% } else { %>
+			<h5 class="text-primary">No Tracked Funds</h5>
+		<% } %>
+		<% if (user.get('purchases').length > 0) { %>
+			<div class="page-header">
+				<h4>Portfolio Value</h4>
+			</div>
+			<table id="net-value" class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>Purchase Date</th>
+						<th>Fund</th>
+						<th># Shares</th>
+						<th>Purchase Price</th>
+						<th>Current Price</th>
+						<th>Net Gain/Loss</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% var totalPurchase = 0; %>
+					<% var totalCurrent = 0; %>
+					<% var purc = user.get('purchased') %>
+					<% _.each(user.get('purchases'), function(purchase) { %>
+					<tr>
+						<td><%= purchase.date.split('T')[0] %></td>
+						<td><%= purchase.stock %></td>
+						<td><%= purchase.shares %></td>
+						<td>$<%= purchase.price %></td>
+						<% var purcValue = Number(purchase.shares * purchase.price).toFixed(2); %>
+						<% totalPurchase += Number(purcValue); %> 
+						<% var currPrice = 0; 
+						   for (var i=0; i<purc.length; i++) {
+						   		if (purc[i].symbol == purchase.stock) {
+						   			currPrice = purc[i].price;
+						   		}
+						   }
+						%>
+						<td>$<%= currPrice %></td>
+						<% var currValue = Number(purchase.shares * currPrice).toFixed(2); %>
+						<% totalCurrent += Number(currValue); %>
+						<% var netValue = Number(currValue - purcValue).toFixed(2); %>
+						<% var pref = netValue > 0 ? '+ $' : '- $'; %>
+						<td class="net">
+							<div class="net-undr"></div>
+							<%= pref %><%= Math.abs(netValue) %>
+						</td>
+					</tr>
+					<% }); %>
+					<tr>
+						<td>Total</td>
+						<td colspan="4"></td>
+						<% pref = totalCurrent > totalPurchase ? '+ $' : '- $'; %>
+						<% var pref2 = totalCurrent > totalPurchase ? ' + ' : ' - ';  %>
+						<% var perc = Number( (totalCurrent - totalPurchase) / totalPurchase * 100).toFixed(2) %> 
+						<td class="net">
+							<div class="net-undr"></div>
+							<%= pref %><%= Math.abs(Number(totalCurrent - totalPurchase)).toFixed(2) %>
+							<br>
+							(<%= pref2 %><%= Math.abs(perc) %>% ) 
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="btn-right">
+				<a href="#portfolio/history" class="btn btn-primary btn-sm">Portfolio History<span class="glyphicon glyphicon-arrow-right white"></span></a>
+				<br/>
+			</div>
+		<% } %>
+	<% } else { %>
+		<h4>You have no recorded purchases. Enter purchases to access MyFunds' great features!</h4>
+	<% }%>
+<% } %>
+<%
+	function prettyDate(date) {
+		var d = new Date(date);
+
+		var monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July',
+        	'August', 'September', 'October', 'November', 'December' ];
+
+		return monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+	}
+%>

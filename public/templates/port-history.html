@@ -1,0 +1,43 @@
+<% if (error != '') { %>
+	<div class="alert alert-dismissible alert-danger">
+	  <button type="button" class="close" data-dismiss="alert">×</button>
+	  <%= error %>
+	</div>
+<% } else { %>
+	<div class="page-header port-hist-head">
+	  <h3>Portfolio History</h3>
+	  <img id="data-loading" class="port-hist-load" src="images/loading.gif">
+	</div>
+	<% if (data.get('data').length > 0) { %>
+		<% var info = data.get('data'); %>
+		<div id="portHistGraph"></div>	
+		<br/>
+		<div id="netHistGraph"></div>
+		<br/>
+		<script type="text/javascript">
+			Highcharts.theme = {
+				colors: ["#FF0000", "#888888", "#000000"]
+			}
+	   	
+			var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
+
+			var values = [];
+			<% for (var i = 0; i < info.length; i++) { %>
+				values.push([ <%= new Date(info[i].date).getTime() %>, <%= info[i].value %>]);
+			<% } %>
+
+			$('#portHistGraph').highcharts('StockChart', {
+	            rangeSelector: { selected: 1 },
+	            title: { text: 'Gross Portfolio Value History' },
+	            series: [{
+	                name: 'Portfolio Value',
+	                data: values,
+	                step: true,
+	                tooltip: { valueDecimals: 2 }
+	            }]
+        	});
+		</script>
+	<% } else { %>
+		<h4>Your portfolio contains no purchases.</h4>
+	<% } %>
+<% } %>
